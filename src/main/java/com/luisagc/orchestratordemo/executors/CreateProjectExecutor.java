@@ -38,22 +38,4 @@ public class CreateProjectExecutor extends ExecutorTemplate<ProjectRequest, Proj
         ProjectEntity entity = requestToEntityMapper.map(projectRequest);
         return projectRepository.saveProject(entity).flatMap(Mono::just);
     }
-
-    @Override
-    protected Mono<Void> metrics(ProjectRequest projectRequest, ProjectResponse projectResponse) {
-        logger.info("Recording metrics");
-        return Mono.empty();
-    }
-
-    @Override
-    protected Mono<Void> audit(ProjectRequest projectRequest, ProjectResponse projectResponse) {
-        logger.info("Recording audit");
-        return Mono.empty();
-    }
-
-    @Override
-    protected Mono<ProjectResponse> handleError(Throwable error) {
-        logger.error("Error occurred while creating project", error);
-        return Mono.error(error);
-    }
 }

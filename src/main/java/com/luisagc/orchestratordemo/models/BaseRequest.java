@@ -2,16 +2,13 @@ package com.luisagc.orchestratordemo.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
 @SuperBuilder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectRequest extends BaseRequest{
-    private String name;
-    private AddressRequest address;
+public class BaseRequest {
+    private String clientId;
 }

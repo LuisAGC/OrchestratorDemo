@@ -1,14 +1,14 @@
 package com.luisagc.orchestratordemo.executors;
 
+import com.luisagc.orchestratordemo.models.BaseRequest;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Optional;
 
-public abstract class ExecutorTemplate<T, U> {
+public abstract class ExecutorTemplate<T extends BaseRequest, U> {
 
     private static final Logger logger = LoggerFactory.getLogger(ExecutorTemplate.class);
 
@@ -37,8 +37,7 @@ public abstract class ExecutorTemplate<T, U> {
                                 return audit(t, u).thenReturn(u);
                             }); // Append audit as Mono<Void>
 
-                })
-                .onErrorResume(this::handleError); // Handle unexpected errors
+                });
     }
 
 
@@ -46,11 +45,19 @@ public abstract class ExecutorTemplate<T, U> {
 
     protected abstract Mono<U> logic(T t);
 
-    protected abstract Mono<Void> metrics(T t, U u);
+    protected Mono<Void> metrics(T request, U response) {
+        logger.info("Recording metrics for clientId: {}", request.getClientId());
+        // Add additional logic for metrics purposes
+        return Mono.empty(); // Stub for metrics
+    }
 
-    protected abstract Mono<Void> audit(T t, U u);
+    protected Mono<Void> audit(T request, U response) {
+        logger.info("Auditing request for clientId: {}", request.getClientId());
+        logger.info("Request: {}, Response: {}", request, response);
+        // Add additional logic for auditing purposes
+        return Mono.empty(); // Stub for audit
+    }
 
-    protected abstract Mono<U> handleError(Throwable error);
 
     // Define how to handle validation errors
     protected Mono<U> handleValidationErrors(List<ValidationError> errors) {

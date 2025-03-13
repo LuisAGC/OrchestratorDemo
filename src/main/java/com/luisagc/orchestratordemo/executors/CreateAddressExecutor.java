@@ -43,22 +43,4 @@ public class CreateAddressExecutor extends ExecutorTemplate<AddressRequest, Opti
                 response -> Mono.just(Optional.of(response))
         );
     }
-
-    @Override
-    protected Mono<Void> metrics(AddressRequest addressRequest, Optional<AddressResponse> addressResponse) {
-        logger.info("Recording metrics");
-        return Mono.empty();
-    }
-
-    @Override
-    protected Mono<Void> audit(AddressRequest addressRequest, Optional<AddressResponse> addressResponse) {
-        logger.info("Recording audit");
-        return Mono.empty();
-    }
-
-    @Override
-    protected Mono<Optional<AddressResponse>> handleError(Throwable error) {
-        logger.error("Error occurred while creating address", error);
-        return Mono.error(error);
-    }
 }
